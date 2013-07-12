@@ -47,6 +47,10 @@ module Textdb
         self[name_without_ext]
       end
 
+      def show
+        self
+      end
+
       # def make_key(name)
       #   Dir.mkdir(File.join(@full_path, name))
       #   build_key(name)

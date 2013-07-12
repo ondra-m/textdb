@@ -29,6 +29,19 @@ module Textdb
 
   # Data
   # -----------------------------------------------------------------
+  def self.read(&block)
+    unless block_given?
+      raise Textdb::BlockRequired, "Read action require a block."
+    end
 
+    keys    = Textdb::BlockMethod.get(&block)
+    pointer = root
+
+    keys.each do |key|
+      pointer = pointer[key.to_s]
+    end
+
+    pointer.show
+  end
 
 end

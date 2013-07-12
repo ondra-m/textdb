@@ -11,6 +11,21 @@ module Textdb
 
         @parent  = parent
       end
+
+      def show
+        @data ||= show!
+      end
+
+      def show!
+        @data = File.read(@full_path)
+      end
+
+
+
+
+      def inspect
+        %{#<Value::0x#{object_id} @data="#{@data}">}
+      end
       
     end
   end
