@@ -1,5 +1,9 @@
 module Textdb
   class BlockMethod
+    
+    instance_methods.each do |meth| 
+      undef_method(meth) unless meth =~ /\A__/ || meth == :object_id
+    end
 
     attr_reader :methods_seq
 
