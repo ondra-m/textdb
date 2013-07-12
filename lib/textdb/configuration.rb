@@ -18,14 +18,27 @@ module Textdb
 
             self.#{key} = value
           end
-
-          def #{key}=(value)
-            Textdb.rebuild
-            @#{key} = value
-          end
         METHOD
 
-        self.send("#{key}=", value)
+        if value.is_a?(Array)
+          eval <<-METHOD
+            def #{key}=(value)
+              #{value[1]}
+              @#{key} = value
+            end
+          METHOD
+          
+          self.send("#{key}=", value[0])
+        else
+          eval <<-METHOD
+            def #{key}=(value)
+              @#{key} = value
+            end
+          METHOD
+          
+          self.send("#{key}=", value)
+        end
+
       end
     end
     
