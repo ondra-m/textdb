@@ -4,7 +4,10 @@ require "textdb/error"
 require "textdb/version"
 
 module Textdb
-  
+
+  autoload :Data,        'textdb/data'
+  autoload :BlockMethod, 'textdb/block_method'
+
   # Global
   # -----------------------------------------------------------------
   def self.config
