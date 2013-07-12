@@ -30,6 +30,10 @@ module Textdb
   # Data
   # -----------------------------------------------------------------
   def self.get(&block)
+    unless block_given?
+      raise Textdb::BlockRequired, "This action require a block."
+    end
+
     keys    = Textdb::BlockMethod.get(&block)
     pointer = root
 
@@ -41,20 +45,18 @@ module Textdb
   end
 
   def self.read(&block)
-    unless block_given?
-      raise Textdb::BlockRequired, "Read action require a block."
-    end
-
     get(&block).show
   end
 
   def self.update(value, &block)
-    unless block_given?
-      raise Textdb::BlockRequired, "Update action require a block."
-    end
-
     get(&block).update(value)
   end
+
+  def self.destroy(&block)
+    get(&block).destroy
+  end
+
+  def self.delete(&block); destroy(&block); end
 
   # TODO: Make the method nicer
   def self.create(&block)
