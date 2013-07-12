@@ -20,7 +20,7 @@ module Textdb
           end
 
           def #{key}=(value)
-            Textdb.delete_root
+            Textdb.rebuild
             @#{key} = value
           end
         METHOD

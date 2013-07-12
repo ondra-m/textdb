@@ -18,4 +18,17 @@ module Textdb
     config.instance_eval(&block)
   end
 
+  def self.root
+    @root ||= Textdb::Data::Key.new('/', nil)
+  end
+
+  def self.rebuild
+    @root = nil
+  end
+
+
+  # Data
+  # -----------------------------------------------------------------
+
+
 end
