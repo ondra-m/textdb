@@ -12,7 +12,7 @@ require "spec_helper"
 #     `-- value2_1
 
 describe "Textdb.create" do
-  before do
+  before(:all) do
     Textdb.config.base_folder = RSpec.configuration.dir
   end
 
