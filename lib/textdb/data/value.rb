@@ -20,7 +20,10 @@ module Textdb
         @data = File.read(@full_path)
       end
 
-
+      def update(value)
+        File.open(@full_path, 'w') { |f| f.write(value) }
+        show!
+      end
 
 
       def inspect

@@ -12,4 +12,7 @@ module Textdb
   class BlockRequired < StandardError
   end
 
+  class AlreadyExist < StandardError
+  end
+
 end
