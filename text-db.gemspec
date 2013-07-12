@@ -2,11 +2,11 @@
 
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'text/db/version'
+require 'textdb/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "text-db"
-  spec.version       = Text::Db::VERSION
+  spec.version       = Textdb::VERSION
   spec.authors       = ["Ondřej Moravčík"]
   spec.email         = ["moravcik.ondrej@gmail.com"]
   spec.description   = %q{TODO: Write a gem description}
@@ -21,4 +21,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "rspec"
 end
