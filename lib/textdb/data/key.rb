@@ -66,20 +66,30 @@ module Textdb
         self
       end
 
-      # def delete
-      #   @children.each do |child|
-      #     child.delete
-      #   end
+      # This method is available only in the Value class.
+      def update
+        raise Textdb::UpdateOnKey, "Key cannot be updated."
+      end
 
-      #   begin
-      #     FileUtils.remove_entry_secure(@full_path)
-      #     parent.send(:metaclass).send(:remove_method, @name)
-      #   rescue
-      #     return false
-      #   end
+      def destroy
+        self.each do |key, value|
+          # Value -> key representing name of the value
+          if key.is_a?(String)
+            value.destroy
+          else
+            key.destroy
+          end
+        end
+
+        begin
+          FileUtils.remove_entry_secure(@full_path)
+          parent.delete(@name)
+        rescue
+          return false
+        end
         
-      #   return true
-      # end
+        return true
+      end
         
     end
   end

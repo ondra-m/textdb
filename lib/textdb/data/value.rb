@@ -25,6 +25,16 @@ module Textdb
         show!
       end
 
+      def destroy
+        begin
+          File.delete(@full_path)
+          parent.delete(@name)
+        rescue
+          return false
+        end
+
+        return true
+      end
 
       def inspect
         %{#<Value::0x#{object_id} @data="#{@data}">}
