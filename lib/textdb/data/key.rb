@@ -15,6 +15,10 @@ module Textdb
         load_values
       end
 
+      def default(key)
+        raise Textdb::ExistError, "#{key} does not exist."
+      end
+
       def load_keys
         Dir.glob(File.join(@full_path, "*/")) do |f|
           basename = File.basename(f)
@@ -47,20 +51,20 @@ module Textdb
         self[name_without_ext]
       end
 
+      def create_key(name)
+        Dir.mkdir(File.join(@full_path, name))
+        build_key(name)
+      end
+
+      def create_value(name)
+        name = "#{name}#{Textdb.config.data_file_extension}"
+        File.open(File.join(@full_path, name), 'w') { |f| f.write('') }
+        build_value(name)
+      end
+
       def show
         self
       end
-
-      # def make_key(name)
-      #   Dir.mkdir(File.join(@full_path, name))
-      #   build_key(name)
-      # end
-
-      # def make_value(name)
-      #   name = "#{name}#{Textdb.config.data_file_extension}"
-      #   File.open(File.join(@full_path, name), 'w') { |f| f.write('') }
-      #   build_value(name)
-      # end
 
       # def delete
       #   @children.each do |child|
