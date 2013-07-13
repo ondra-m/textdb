@@ -5,7 +5,7 @@ module Textdb
 
     data_file_extension: ['.data', 'Textdb.rebuild'],
 
-    listen: [false, 'Textdb.listen']
+    listen: [false, 'Textdb.listener.change']
   }
 
 end

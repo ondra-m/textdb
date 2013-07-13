@@ -23,12 +23,13 @@ module Textdb
         if value.is_a?(Array)
           eval <<-METHOD
             def #{key}=(value)
-              #{value[1]}
               @#{key} = value
+              #{value[1]}
+              value
             end
           METHOD
           
-          self.send("#{key}=", value[0])
+          instance_variable_set :"@#{key}", value[0]
         else
           eval <<-METHOD
             def #{key}=(value)
@@ -36,10 +37,13 @@ module Textdb
             end
           METHOD
           
-          self.send("#{key}=", value)
+          instance_variable_set :"@#{key}", value
         end
 
       end
+
+
+
     end
     
   end
