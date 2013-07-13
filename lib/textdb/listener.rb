@@ -3,9 +3,13 @@ require "fssm"
 module Textdb
   class Listener
 
+    attr_accessor :create_skip
+
     def initialize
       @listener = nil
       @thread = nil
+
+      @create_skip = []
     end
 
     def config
@@ -19,14 +23,6 @@ module Textdb
         stop
       end
     end
-
-    # def proccess_name(b, r, t)
-    #   name = r.gsub(config.data_file_extension, '')
-    #   path = b.gsub(config.base_folder, '')
-    #   is_directory = t == :directory ? true : false
-
-    #   return name, path, is_directory
-    # end
 
     def get(r)
       keys = r.split('/')
@@ -42,6 +38,10 @@ module Textdb
 
     def create(b, r, t)
       pointer, last = get(r)
+
+      unless @create_skip.delete('/' + r).nil?
+        return pointer[last]
+      end
 
       if t == :directory
         pointer.build_key(last)

@@ -52,7 +52,12 @@ module Textdb
       end
 
       def create_key(name)
+        if Textdb.config.listen
+          Textdb.listener.create_skip << File.join(@path, name)
+        end
+
         Dir.mkdir(File.join(@full_path, name))
+
         build_key(name)
       end
 
