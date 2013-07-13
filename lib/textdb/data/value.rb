@@ -12,6 +12,11 @@ module Textdb
         @parent  = parent
       end
 
+      # [] can be only in Key
+      def [](key)
+        raise Textdb::ValueCannotBeKey, "#{@name} is value."
+      end
+
       def show
         @data ||= show!
       end
