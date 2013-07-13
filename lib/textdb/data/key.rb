@@ -63,6 +63,11 @@ module Textdb
 
       def create_value(name)
         name = "#{name}#{Textdb.config.data_file_extension}"
+
+        if Textdb.config.listen
+          Textdb.listener.create_skip << File.join(@path, name)
+        end
+
         File.open(File.join(@full_path, name), 'w') { |f| f.write('') }
         build_value(name)
       end
