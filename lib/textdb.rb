@@ -7,6 +7,7 @@ module Textdb
 
   autoload :Data,        'textdb/data'
   autoload :BlockMethod, 'textdb/block_method'
+  autoload :Listener,    'textdb/listener'
 
   # Global
   # -----------------------------------------------------------------
@@ -24,6 +25,10 @@ module Textdb
 
   def self.rebuild
     @root = nil
+  end
+
+  def self.listener
+    @listener ||= Textdb::Listener.new
   end
 
 
@@ -56,7 +61,9 @@ module Textdb
     get(&block).destroy
   end
 
-  def self.delete(&block); destroy(&block); end
+  def self.delete(&block)
+    destroy(&block)
+  end
 
   # TODO: Make the method nicer
   def self.create(&block)
