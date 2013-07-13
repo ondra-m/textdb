@@ -43,6 +43,10 @@ module Textdb
     pointer = root
 
     keys.each do |key|
+      if pointer.class.name == 'Textdb::Data::Value'
+        raise Textdb::ValueCannotBeKey, "#{pointer.name} is value (doesn't have key: #{key})"
+      end
+      
       pointer = pointer[key.to_s]
     end
 
