@@ -24,9 +24,13 @@ module Textdb
       end
     end
 
-    def get(r)
+    def get(r, remove_ext = false)
       keys = r.split('/')
       last = keys.pop
+
+      if remove_ext
+        last = last.gsub(config.data_file_extension, '')
+      end
 
       pointer = Textdb.root
       keys.each do |key|
@@ -51,11 +55,15 @@ module Textdb
     end
 
     def update(b, r, t)
-      
+      pointer, last = get(r, true)
+
+      pointer[last].show!
+
+      puts "update (directory: #{t == :directory ? "true " : "false"}): ---#{r}---"
     end
 
     def delete(b, r, t)
-      
+      puts "delete (directory: #{t == :directory ? "true " : "false"}): ---#{r}---"
     end
 
     def start
@@ -69,7 +77,7 @@ module Textdb
     end
 
     def stop
-      # Thread.kill(@thread) if @thread
+      Thread.kill(@thread) if @thread
     end
 
   end
