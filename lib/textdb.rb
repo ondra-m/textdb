@@ -3,11 +3,17 @@ require "textdb/default_configuration"
 require "textdb/error"
 require "textdb/version"
 
+# TODO:
+#   - nicer method
+#   - check data file extension only at the end of name
+
 module Textdb
 
   autoload :Data,        'textdb/data'
   autoload :BlockMethod, 'textdb/block_method'
-  autoload :Listener,    'textdb/listener'
+  autoload :Event,       'textdb/event'
+
+
 
   # Global
   # -----------------------------------------------------------------
@@ -27,9 +33,6 @@ module Textdb
     @root = nil
   end
 
-  def self.listener
-    @listener ||= Textdb::Listener.new
-  end
 
 
   # Data
@@ -43,10 +46,6 @@ module Textdb
     pointer = root
 
     keys.each do |key|
-      # if pointer.class.name == 'Textdb::Data::Value'
-      #   raise Textdb::ValueCannotBeKey, "#{pointer.name} is value (doesn't have key: #{key})"
-      # end
-      
       pointer = pointer[key.to_s]
     end
 
@@ -83,20 +82,13 @@ module Textdb
       begin
         pointer = pointer[key]
       rescue Textdb::ExistError
-        if pointer.class.name == 'Textdb::Data::Value'
-          raise Textdb::ValueCannotBeKey, "'#{key}' is already Value, cannot be Key."
-        else
-          pointer = pointer.create_key(key)
-        end
+        pointer = pointer.create_key(key)
       end
     end
 
     begin
       pointer = pointer[value]
-      case pointer.class.name
-      when 'Textdb::Data::Key';   raise(Textdb::AlreadyExist, "#{value} already exist as key.")
-      when 'Textdb::Data::Value'; raise(Textdb::AlreadyExist, "#{value} already exist.")
-      end
+      raise Textdb::AlreadyExist, "#{value} already exist."
     rescue Textdb::ExistError
       pointer.create_value(value)
     end
