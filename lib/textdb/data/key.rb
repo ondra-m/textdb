@@ -65,16 +65,21 @@ module Textdb
       end
 
       def create_key(name)
+        to_return = build_key(name)
+
         Dir.mkdir(File.join(@full_path, name))
 
-        build_key(name)
+        to_return
       end
 
       def create_value(name)
         name = "#{name}#{Textdb.config.data_file_extension}"
 
+        to_return = build_value(name)
+        
         File.open(File.join(@full_path, name), 'w') { |f| f.write('') }
-        build_value(name)
+
+        to_return
       end
 
       def show
