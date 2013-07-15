@@ -36,13 +36,21 @@ module Textdb
 
       def destroy
         begin
-          File.delete(@full_path)
-          parent.delete(@name)
+          destroy_file
+          destroy_value
         rescue
           return false
         end
 
         return true
+      end
+
+      def destroy_file
+        File.delete(@full_path)
+      end
+
+      def destroy_value
+        parent.delete(@name)
       end
 
       def inspect

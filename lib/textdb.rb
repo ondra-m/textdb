@@ -8,6 +8,7 @@ require "textdb/version"
 #   - check data file extension only at the end of name
 #   - documentation
 #   - unite textdb.* and event.processor.* methods
+#   - Event.processor - delete also the key
 
 module Textdb
 

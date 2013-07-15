@@ -1,6 +1,9 @@
 require "spec_helper"
 
 describe "Textdb.delete" do
+  let(:base_folder)   { Textdb.config.base_folder }
+  let(:data_file_ext) { Textdb.config.data_file_extension }
+
   before(:all) do
     Textdb.create { key5.key5_1.value5_1_1 }
     Textdb.create { key5.key5_1.value5_1_2 }
@@ -11,7 +14,7 @@ describe "Textdb.delete" do
   end
 
   it "value" do
-    file = File.join Textdb.config.base_folder, "key5", "key5_1", "value5_1_1#{Textdb.config.data_file_extension}"
+    file = File.join base_folder, "key5", "key5_1", "value5_1_1#{data_file_ext}"
 
     expect( File.exist?(file) ).to eql(true)
 
@@ -23,7 +26,7 @@ describe "Textdb.delete" do
   end
 
   it "key" do
-    dir = File.join Textdb.config.base_folder, "key6"
+    dir = File.join base_folder, "key6"
 
     expect( Dir.exist?(dir) ).to eql(true)
 
@@ -35,7 +38,7 @@ describe "Textdb.delete" do
   end
 
   it "recursive" do
-    dir = File.join Textdb.config.base_folder, "key5"
+    dir = File.join base_folder, "key5"
 
     Textdb.delete { key5 }
 
@@ -44,5 +47,21 @@ describe "Textdb.delete" do
     expect { Textdb.read { key5.key5_1.value5_1_2 } }.to raise_error(Textdb::ExistError)
     expect { Textdb.read { key5.key5_1.value5_1_3 } }.to raise_error(Textdb::ExistError)
     expect { Textdb.read { key5.value5_1          } }.to raise_error(Textdb::ExistError)
+  end
+
+  context "listen" do
+    it "delete a file" do
+      Textdb.create { key5.key5_2.value5_2_1 }
+
+      sleep 0.5
+      
+      file = File.join base_folder, "key5", "key5_2", "value5_2_1#{data_file_ext}"
+
+      File.delete(file)
+
+      sleep 0.5
+
+      expect { Textdb.read { key5.key5_2.value5_2_1 } }.to raise_error(Textdb::ExistError)
+    end
   end
 end
