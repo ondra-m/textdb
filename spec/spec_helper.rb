@@ -14,7 +14,9 @@ RSpec.configure do |config|
   config.add_setting :dir
 
   config.before(:suite) {
-    RSpec.configuration.dir = Dir.mktmpdir
+    RSpec.configuration.dir   = Dir.mktmpdir
+    Textdb.config.base_folder = RSpec.configuration.dir
+    Textdb.config.listen      = true
   }
   config.after(:suite) {
     FileUtils.remove_entry_secure RSpec.configuration.dir

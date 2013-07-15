@@ -6,6 +6,8 @@ require "textdb/version"
 # TODO:
 #   - nicer method
 #   - check data file extension only at the end of name
+#   - documentation
+#   - unite textdb.* and event.processor.* methods
 
 module Textdb
 

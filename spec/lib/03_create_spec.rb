@@ -39,4 +39,10 @@ describe "Textdb.create" do
     expect { Textdb.create }.to raise_error(Textdb::BlockRequired)
   end
 
+  context "listen for changes" do
+    
+    
+
+  end
+
 end

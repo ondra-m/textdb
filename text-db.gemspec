@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.version       = Textdb::VERSION
   spec.authors       = ["Ondřej Moravčík"]
   spec.email         = ["moravcik.ondrej@gmail.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = %q{Textdb is a database which structure is determined by folders and data are represented by files.}
+  spec.summary       = %q{}
+  spec.homepage      = "https://github.com/ondra-m/textdb"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

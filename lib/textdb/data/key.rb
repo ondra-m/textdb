@@ -19,26 +19,34 @@ module Textdb
         raise Textdb::ExistError, "#{key} does not exist."
       end
 
-      def load_keys
-        Dir.glob(File.join(@full_path, "*/")) do |f|
-          basename = File.basename(f)
 
-          build_key(basename)
+
+      # Auto load
+      # -----------------------------------------------------------------
+      def keys_glob
+        File.join(@full_path, "*/")
+      end
+
+      def values_glob
+        File.join(@full_path, "*#{Textdb.config.data_file_extension}")
+      end
+
+      def load_keys
+        Dir.glob(keys_glob) do |f|
+          build_key(File.basename(f))
         end
       end
 
       def load_values
-        Dir.glob(File.join(@full_path, "*#{Textdb.config.data_file_extension}")) do |f|
-          basename = File.basename(f)
-
-          build_value(basename)
+        Dir.glob(values_glob) do |f|
+          build_value(File.basename(f))
         end
       end
 
-      #   def metaclass
-      #     class << self; self; end
-      #   end
 
+
+      # Build and create
+      # -----------------------------------------------------------------
       def build_key(name)
         self[name] = Textdb::Data::Key.new(File.join(@path, name), self)
         self[name]
@@ -53,7 +61,7 @@ module Textdb
 
       def create_key(name)
         if Textdb.config.listen
-          Textdb.listener.create_skip << File.join(@path, name)
+          Textdb::Event.listener.create_skip << File.join(@path, name)
         end
 
         Dir.mkdir(File.join(@full_path, name))
@@ -65,7 +73,7 @@ module Textdb
         name = "#{name}#{Textdb.config.data_file_extension}"
 
         if Textdb.config.listen
-          Textdb.listener.create_skip << File.join(@path, name)
+          Textdb::Event.listener.create_skip << File.join(@path, name)
         end
 
         File.open(File.join(@full_path, name), 'w') { |f| f.write('') }
