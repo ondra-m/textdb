@@ -25,6 +25,10 @@ module Textdb
         @data = File.read(@full_path)
       end
 
+      def nil_data
+        @data = nil
+      end
+
       def update(value)
         File.open(@full_path, 'w') { |f| f.write(value) }
         show!

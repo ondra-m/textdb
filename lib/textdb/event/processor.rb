@@ -5,7 +5,13 @@ module Textdb
       def initialize
       end
 
+      def config
+        Textdb.config
+      end
+
       def create(files)
+        puts "create: ---#{files}---"
+
         files.each do |file|
           pointer, value = get(file, true)
           pointer.build_value(value)
@@ -16,7 +22,11 @@ module Textdb
         puts "update: ---#{files}---"
 
         files.each do |file|
+          pointer, value = get(file)
+
+          value = remove_ext(value)
           
+          pointer[value].nil_data
         end
       end
 
@@ -36,12 +46,16 @@ module Textdb
             if create
               pointer = pointer.build_key(key)
             else
-              pointer[key]
+              pointer = pointer[key]
             end
           end
         end
 
         return pointer, value
+      end
+
+      def remove_ext(name)
+        name.gsub(config.data_file_extension, '')
       end
       
       # def get(r, remove_ext = false)
