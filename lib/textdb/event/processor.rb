@@ -1,13 +1,11 @@
 module Textdb
   module Event
     class Processor
-
+      
       def initialize
       end
 
       def create(files)
-        puts "create: ---#{files}---"
-
         files.each do |file|
           pointer, value = get(file, true)
           pointer.build_value(value)
@@ -16,6 +14,10 @@ module Textdb
 
       def update(files)
         puts "update: ---#{files}---"
+
+        files.each do |file|
+          
+        end
       end
 
       def delete(files)

@@ -39,9 +39,23 @@ describe "Textdb.create" do
     expect { Textdb.create }.to raise_error(Textdb::BlockRequired)
   end
 
-  context "listen for changes" do
+  context "listen" do
     
-    
+    it "create a file" do
+      expect { Textdb.read { key2.value2_2 } }.to raise_error(Textdb::ExistError)
+
+      File.open(File.join(Textdb.config.base_folder, 'key2', 'value2_2.data'), 'w') { |f| f.write("text") }
+
+      sleep 0.5
+
+      expect(Textdb.read { key2.value2_2 }).to eql("text")
+    end
+
+    it ".create overrites .listen.create" do
+      value_class = Textdb.create { key2.value2_3 }
+
+      expect( Textdb.root['key2']['value2_3'] ).to eql(value_class)
+    end
 
   end
 

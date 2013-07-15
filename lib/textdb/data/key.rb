@@ -52,18 +52,19 @@ module Textdb
         self[name]
       end
 
+      # Listener listen only for file
       def build_value(name)
         name_without_ext = name.gsub(Textdb.config.data_file_extension, "")
 
-        self[name_without_ext] = Textdb::Data::Value.new(File.join(@path, name), self)
-        self[name_without_ext]
+        begin
+          self[name_without_ext]
+        rescue Textdb::ExistError
+          self[name_without_ext] = Textdb::Data::Value.new(File.join(@path, name), self)
+          self[name_without_ext]
+        end
       end
 
       def create_key(name)
-        if Textdb.config.listen
-          Textdb::Event.listener.create_skip << File.join(@path, name)
-        end
-
         Dir.mkdir(File.join(@full_path, name))
 
         build_key(name)
@@ -71,10 +72,6 @@ module Textdb
 
       def create_value(name)
         name = "#{name}#{Textdb.config.data_file_extension}"
-
-        if Textdb.config.listen
-          Textdb::Event.listener.create_skip << File.join(@path, name)
-        end
 
         File.open(File.join(@full_path, name), 'w') { |f| f.write('') }
         build_value(name)

@@ -4,10 +4,7 @@ module Textdb
   module Event
     class Listener
 
-      attr_accessor :create_skip
-      
       def initialize
-        @create_skip = []
       end
 
       def config
