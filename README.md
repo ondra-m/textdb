@@ -140,6 +140,22 @@ Textdb.delete { key1 }            # -> delete everything in the folder /key1
 Textdb.delete { key2.value2_1 }   # -> delete only /key/value2_1.data
 ```
 
+## Listen
+
+If **listen** is true.
+
+```ruby
+Textdb.read { a.b }   # -> "text"
+
+# On FS -------------------------
+File.open('/a/b.data', 'w') { |f| 
+  f.write('text 2')
+}
+# -------------------------------
+
+Textdb.read { a.b }   # -> "text 2"
+```
+
 ## Contributing
 
 1. Fork it
