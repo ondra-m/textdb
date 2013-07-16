@@ -86,11 +86,7 @@ Textdb.config.key = "/tmp/1"
     <tr>
       <td><b>listen</b></td>
       <td>false</td>
-      <td>
-        Automatic listening for changes in the root folder.<br>
-        <br>
-        Current works onyl with adding file.
-      </td>
+      <td>Automatic listening for changes in the root folder</td>
     </tr>
   </tbody>
 </table>
