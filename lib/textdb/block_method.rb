@@ -9,11 +9,32 @@ module Textdb
 
     def self.get(&block)
       begin
-        Textdb::BlockMethod.new.instance_eval(&block).methods_seq
-      rescue NoMethodError
-        []
+        called_block = block.call
+
+        case called_block.class.to_s
+        when 'String';   string_block(&block)
+        end
+      rescue NameError
+        method_block(&block)
       end
     end
+
+    def self.string_block(&block)
+      block.call.split('.')
+    end
+
+    def nil_block
+      []
+    end
+
+    def self.method_block(&block)
+      begin
+        Textdb::BlockMethod.new.instance_eval(&block).methods_seq
+      rescue NoMethodError
+        nil_block
+      end
+    end
+
 
     def initialize
       @methods_seq = []
