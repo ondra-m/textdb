@@ -31,8 +31,12 @@ module Textdb
           pointer, value = get(file)
 
           value = remove_ext(value)
-          
-          pointer[value].destroy_value
+
+          begin
+            value_class = pointer[value]
+            value_class.destroy_value
+          rescue Textdb::ExistError
+          end
         end
       end
 
